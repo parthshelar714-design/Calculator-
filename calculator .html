@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PARTH CALCULATOR</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body { font-family: 'Roboto', sans-serif; margin:0; padding:0; transition:0.3s; }
+header { text-align:center; padding:15px; font-size:28px; font-weight:bold; }
+.ad-banner { text-align:center; padding:10px; background-color:#fffae6; color:#333; font-weight:bold; font-size:18px; }
+.calculator-container { max-width:520px; margin:10px auto; padding:10px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.2); background-color:#f0f0f0; }
+input[type=text], input[type=number] { width:100%; height:50px; font-size:20px; text-align:right; margin-bottom:10px; padding:5px; border-radius:5px; border:1px solid #ccc; }
+.btn-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+button { padding:20px; font-size:18px; border:none; border-radius:8px; cursor:pointer; transition:0.2s; }
+button:hover { opacity:0.9; }
+
+/* Themes */
+body.light { background-color:#ffffff; color:#000; }
+body.light .calculator-container { background-color:#f0f0f0; }
+body.light button { background-color:#e0e0e0; color:#000; }
+
+body.dark { background-color:#121212; color:#fff; }
+body.dark .calculator-container { background-color:#1e1e1e; }
+body.dark button { background-color:#333; color:#fff; }
+
+body.custom { background-color:#e8f0fe; color:#333; }
+body.custom .calculator-container { background-color:#d0e1ff; }
+body.custom button { background-color:#a0c4ff; color:#000; }
+
+/* Tabs */
+.tabs { display:flex; justify-content:space-around; margin-bottom:10px; }
+.tab { padding:10px; cursor:pointer; font-weight:bold; border-bottom:2px solid transparent; }
+.tab.active { border-bottom:2px solid #007bff; }
+
+.calculator-section { display:none; }
+.calculator-section.active { display:block; }
+
+/* Theme Switcher */
+.theme-switcher { text-align:center; margin-bottom:10px; }
+.theme-switcher button { padding:8px 15px; margin:5px; font-size:16px; border-radius:5px; }
+
+</style>
+</head>
+<body class="light">
+
+<header>PARTH CALCULATOR</header>
+<div class="ad-banner">Welcome</div>
+
+<div class="theme-switcher">
+  <button onclick="setTheme('light')">Light</button>
+  <button onclick="setTheme('dark')">Dark</button>
+  <button onclick="setTheme('custom')">Custom</button>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="showTab('basic')">Basic</div>
+  <div class="tab" onclick="showTab('scientific')">Scientific</div>
+  <div class="tab" onclick="showTab('converter')">Converters</div>
+  <div class="tab" onclick="showTab('others')">Others</div>
+</div>
+
+<div class="calculator-container">
+
+  <!-- Basic Calculator -->
+  <div id="basic" class="calculator-section active">
+    <input type="text" id="basic-display" readonly>
+    <div class="btn-grid">
+      <button onclick="basicPress('7')">7</button>
+      <button onclick="basicPress('8')">8</button>
+      <button onclick="basicPress('9')">9</button>
+      <button onclick="basicPress('/')">÷</button>
+      <button onclick="basicPress('4')">4</button>
+      <button onclick="basicPress('5')">5</button>
+      <button onclick="basicPress('6')">6</button>
+      <button onclick="basicPress('*')">×</button>
+      <button onclick="basicPress('1')">1</button>
+      <button onclick="basicPress('2')">2</button>
+      <button onclick="basicPress('3')">3</button>
+      <button onclick="basicPress('-')">−</button>
+      <button onclick="basicPress('0')">0</button>
+      <button onclick="basicPress('.')">.</button>
+      <button onclick="basicCalculate()" style="background-color:#4CAF50; color:#fff;">=</button>
+      <button onclick="basicPress('+')">+</button>
+      <button onclick="basicClear()" style="grid-column: span 4; background-color:#ff4d4d; color:#fff;">C</button>
+    </div>
+  </div>
+
+  <!-- Scientific Calculator -->
+  <div id="scientific" class="calculator-section">
+    <input type="text" id="sci-display" readonly>
+    <div class="btn-grid">
+      <!-- Numeric Buttons -->
+      <button onclick="sciPress('7')">7</button>
+      <button onclick="sciPress('8')">8</button>
+      <button onclick="sciPress('9')">9</button>
+      <button onclick="sciPress('/')">÷</button>
+      <button onclick="sciPress('4')">4</button>
+      <button onclick="sciPress('5')">5</button>
+      <button onclick="sciPress('6')">6</button>
+      <button onclick="sciPress('*')">×</button>
+      <button onclick="sciPress('1')">1</button>
+      <button onclick="sciPress('2')">2</button>
+      <button onclick="sciPress('3')">3</button>
+      <button onclick="sciPress('-')">−</button>
+      <button onclick="sciPress('0')">0</button>
+      <button onclick="sciPress('.')">.</button>
+      <button onclick="sciCalculate()" style="background-color:#4CAF50; color:#fff;">=</button>
+      <button onclick="sciPress('+')">+</button>
+
+      <!-- Scientific Functions -->
+      <button onclick="sciPress('Math.sin(')">sin</button>
+      <button onclick="sciPress('Math.cos(')">cos</button>
+      <button onclick="sciPress('Math.tan(')">tan</button>
+      <button onclick="sciPress('Math.log(')">log</button>
+      <button onclick="sciPress('Math.sqrt(')">√</button>
+      <button onclick="sciPress('**2')">x²</button>
+      <button onclick="sciPress('**3')">x³</button>
+      <button onclick="sciPress('(')">(</button>
+      <button onclick="sciPress(')')">)</button>
+      <button onclick="sciClear()" style="grid-column: span 4; background-color:#ff4d4d; color:#fff;">C</button>
+    </div>
+  </div>
+
+  <!-- Converters -->
+  <div id="converter" class="calculator-section">
+    <input type="number" id="conv-input" placeholder="Enter value">
+    <select id="conv-type">
+      <option value="temp">Temperature °C → °F</option>
+      <option value="length">Length m → cm</option>
+      <option value="weight">Weight kg → g</option>
+      <option value="time">Time hr → min</option>
+      <option value="currency">Currency ₹ → $</option>
+    </select>
+    <button onclick="convertValue()" style="background-color:#007bff; color:#fff;">Convert</button>
+    <input type="text" id="conv-output" readonly placeholder="Result">
+  </div>
+
+  <!-- Other Calculators -->
+  <div id="others" class="calculator-section">
+    <input type="number" id="other1" placeholder="Value 1 (Weight, Principal, Amount)">
+    <input type="number" id="other2" placeholder="Value 2 (Height cm, Months, Tip %)">
+    <select id="other-type">
+      <option value="bmi">BMI Calculator</option>
+      <option value="loan">EMI/Loan Calculator</option>
+      <option value="tip">Tip Splitter</option>
+    </select>
+    <button onclick="otherCalculate()" style="background-color:#007bff; color:#fff;">Calculate</button>
+    <input type="text" id="other-output" readonly placeholder="Result">
+  </div>
+
+</div>
+
+<script>
+// Theme
+function setTheme(theme){ document.body.className=theme; }
+
+// Tabs
+function showTab(tab){
+  document.querySelectorAll('.calculator-section').forEach(sec=>sec.classList.remove('active'));
+  document.getElementById(tab).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelector(`.tab[onclick="showTab('${tab}')"]`).classList.add('active');
+}
+
+// Basic Calculator
+let basicExp='';
+function basicPress(val){ basicExp+=val; document.getElementById('basic-display').value=basicExp; }
+function basicCalculate(){ try{ basicExp=eval(basicExp).toString(); }catch{basicExp='Error';} document.getElementById('basic-display').value=basicExp; }
+function basicClear(){ basicExp=''; document.getElementById('basic-display').value=''; }
+
+// Scientific Calculator
+let sciExp='';
+function sciPress(val){ sciExp+=val; document.getElementById('sci-display').value=sciExp; }
+function sciCalculate(){ try{ sciExp=eval(sciExp).toString(); }catch{sciExp='Error';} document.getElementById('sci-display').value=sciExp; }
+function sciClear(){ sciExp=''; document.getElementById('sci-display').value=''; }
+
+// Converters
+function convertValue(){
+  let val=parseFloat(document.getElementById('conv-input').value);
+  let type=document.getElementById('conv-type').value;
+  let res='';
+  if(type==='temp'){ res=(val*9/5+32).toFixed(2)+' °F'; }
+  else if(type==='length'){ res=(val*100).toFixed(2)+' cm'; }
+  else if(type==='weight'){ res=(val*1000).toFixed(2)+' g'; }
+  else if(type==='time'){ res=(val*60).toFixed(2)+' min'; }
+  else if(type==='currency'){ res=(val*0.012).toFixed(2)+' $'; }
+  document.getElementById('conv-output').value=res;
+}
+
+// Other Calculators
+function otherCalculate(){
+  let val1=parseFloat(document.getElementById('other1').value);
+  let val2=parseFloat(document.getElementById('other2').value);
+  let type=document.getElementById('other-type').value;
+  let res='';
+  if(type==='bmi'){ res=(val1/((val2/100)**2)).toFixed(2)+' BMI'; }
+  else if(type==='loan'){ res='EMI: '+((val1*0.1)/12).toFixed(2)+' /month'; }
+  else if(type==='tip'){ res='Tip: '+(val1*(val2/100)).toFixed(2); }
+  document.getElementById('other-output').value=res;
+}
+</script>
+
+</body>
+</html>
